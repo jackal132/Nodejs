@@ -10,7 +10,8 @@ http.createServer(function(request, response){
             'yummy_cookie=choco',
             'tasty_cookie=strawberry',
             `Permanent=cookies; Max-Age=${60*60*24*30}`,
-            'Secure=Secure; Secure'
+            'Secure=Secure; Secure',
+            'httpOnly=httpOnly; httpOnly'
         ]
     });
 
