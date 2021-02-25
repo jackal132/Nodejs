@@ -156,6 +156,50 @@ var app = http.createServer(function(request, response){
             });         
         });
 
+    } else if(pathname === '/login'){
+       
+        fs.readdir('./data', function(error, filelist){
+            var title = 'Login';
+            var list = template.list(filelist);
+            var html = template.html(title, list, 
+                `
+                <form action="/login_process" method="post">
+                    <p><input type="text" name="email" placeholder="email"></p>
+                    <p><input type="password" name="password" placeholder="password"></p>
+                    <p><input type="submit"></p>
+                </form>`,
+                `<a href="/create">create</a>`);
+    
+            response.writeHead(200);
+            response.end(html);
+        });
+    
+    } else if(pathname === '/login_process'){
+       
+        var body = '';
+        request.on('data', function(data){
+            body = body + data;  
+        });
+
+        request.on('end', function(){
+            var post = qs.parse(body);
+            if(post.email === 'inpee@gmail.com' && post.password === '1'){
+                
+                response.writeHead(302, {
+                    'Set-Cookie': [
+                        `email=${post.email}`,
+                        `password=${post.password}`
+                    ],
+                    Location:`/`
+                });
+
+                response.end();
+            } else {
+                response.end('Who?');     
+            }
+            
+        });
+    
     } else {
 
         response.writeHead(404);
